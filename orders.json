@@ -1,0 +1,18 @@
+{
+  "orders": [
+    {
+      "id": 8176123432,
+      "userId": "6AYBo8G2ztYREUDTSKTWmNPw6p43",
+      "amount": 500,
+      "ingredients": [{ "type": "meat", "amount": 5 }],
+      "deliveryAddress": "Uttara"
+    },
+    {
+      "id": 81761123432,
+      "userId": "6AYBo8G2ztYREUDTSKTWmNPw6p43",
+      "amount": 500,
+      "ingredients": [{ "type": "meat", "amount": 5 }],
+      "deliveryAddress": "Uttara"
+    }
+  ]
+}
