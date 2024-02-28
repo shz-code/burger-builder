@@ -3,8 +3,8 @@ const Summary = ({ ingredients }) => {
     <div>
       <ul>
         {ingredients.map((item) => (
-          <li key={item.type}>
-            <span className="text-uppercase fw-bold">{item.type}</span>:{" "}
+          <li key={item.itemType}>
+            <span className="text-uppercase fw-bold">{item.itemType}</span>:{" "}
             {item.amount}
           </li>
         ))}

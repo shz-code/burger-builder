@@ -1,10 +1,16 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Button, Modal, ModalBody } from "reactstrap";
+import { useInitMutation } from "../../../features/orders/orderApi";
 import Spinner from "../../Spinner/Spinner";
 
 const Checkout = () => {
-  const { totalPrice } = useSelector((state) => state.burger);
+  const { totalPrice, ingredients } = useSelector((state) => state.burger);
+  const { userId, email } = useSelector((state) => state.user);
+
+  const navigate = useNavigate();
+
   const [values, setValues] = useState({
     deliveryAddress: "",
     phone: "",
@@ -13,44 +19,32 @@ const Checkout = () => {
   const [modalMsg, setModalMsg] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
 
-  const submitHandler = () => {
-    // this.setState({ isLoading: true });
-    // const order = {
-    //   ingredients: this.props.ingredients,
-    //   customer: this.state.values,
-    //   price: this.props.totalPrice,
-    //   orderTime: new Date(),
-    //   userId: this.props.userId,
-    // };
-    // axios
-    //   .post(
-    //     "https://burger-builder-4f837.firebaseio.com/orders.json?auth=" +
-    //       this.props.token,
-    //     order
-    //   )
-    //   .then((response) => {
-    //     if (response.status === 200) {
-    //       this.setState({
-    //         isLoading: false,
-    //         isModalOpen: true,
-    //         modalMsg: "Order Placed Successfully!",
-    //       });
-    //       this.props.resetIngredients();
-    //     } else {
-    //       this.setState({
-    //         isLoading: false,
-    //         isModalOpen: true,
-    //         modalMsg: "Something Went Wrong! Order Again!",
-    //       });
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     this.setState({
-    //       isLoading: false,
-    //       isModalOpen: true,
-    //       modalMsg: "Something Went Wrong! Order Again!",
-    //     });
-    //   });
+  const [init, { isLoading }] = useInitMutation();
+
+  const submitHandler = async () => {
+    const body = {
+      ingredients: ingredients,
+      deliveryAddress: values.deliveryAddress,
+      amount: totalPrice,
+      userId: userId,
+      paymentType: values.paymentType,
+      email: email,
+      phone: values.phone,
+    };
+    try {
+      const res = await init(body);
+      if (res.data.payment) {
+        setModalOpen(true);
+        setModalMsg("Order Placed Successfully");
+      } else if (res.data.status) {
+        setModalOpen(true);
+        window.location = res.data.url;
+      }
+    } catch (err) {
+      console.log(err);
+      setModalOpen(true);
+      setModalMsg("Something Went Wrong");
+    }
   };
 
   let form = (
@@ -86,19 +80,19 @@ const Checkout = () => {
           }
         >
           <option value="Cash On Delivery">Cash On Delivery</option>
-          <option value="Bkash">Bkash</option>
+          <option value="Pay Now">Pay Now</option>
         </select>
         <Button
           className="mr-auto brand-bg border-0"
           onClick={submitHandler}
-          // disabled={!this.props.purchasable}
+          disabled={!values.deliveryAddress || !values.phone}
         >
           Place Order
         </Button>
         <Button
           color="secondary border-0 ms-2"
           className="ml-1"
-          onClick={() => {}}
+          onClick={() => navigate("/")}
         >
           Cancel
         </Button>
@@ -107,8 +101,8 @@ const Checkout = () => {
   );
   return (
     <div>
-      {false ? <Spinner /> : form}
-      <Modal isOpen={modalOpen} onClick={() => {}}>
+      {isLoading ? <Spinner /> : form}
+      <Modal isOpen={modalOpen} onClick={() => navigate("/")}>
         <ModalBody>
           <p>{modalMsg}</p>
         </ModalBody>

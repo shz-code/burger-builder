@@ -2,9 +2,9 @@ import { Button, Card, CardBody, CardFooter, CardHeader } from "reactstrap";
 import BuildControls from "./BuildControls";
 
 const controls = [
-  { label: "Salad", type: "salad" },
-  { label: "Cheese", type: "cheese" },
-  { label: "Meat", type: "meat" },
+  { label: "Salad", itemType: "salad" },
+  { label: "Cheese", itemType: "cheese" },
+  { label: "Meat", itemType: "meat" },
 ];
 
 const Controls = ({ price, setModalOpen }) => {

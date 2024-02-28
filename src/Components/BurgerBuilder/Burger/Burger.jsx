@@ -6,7 +6,7 @@ const Burger = ({ ingredients }) => {
     .map((item) => {
       let amountArr = [...Array(item.amount).keys()];
       return amountArr.map(() => {
-        return <Ingredient type={item.type} key={Math.random()} />;
+        return <Ingredient itemType={item.itemType} key={Math.random()} />;
       });
     })
     .reduce((arr, element) => {
@@ -18,9 +18,9 @@ const Burger = ({ ingredients }) => {
   }
   return (
     <div className="Burger">
-      <Ingredient type="bread-top" />
+      <Ingredient itemType="bread-top" />
       {ingredientArr}
-      <Ingredient type="bread-bottom" />
+      <Ingredient itemType="bread-bottom" />
     </div>
   );
 };

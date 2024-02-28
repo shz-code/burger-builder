@@ -8,9 +8,9 @@ const ingredientPrices = {
 
 const initialState = {
   ingredients: [
-    { type: "salad", amount: 0 },
-    { type: "cheese", amount: 0 },
-    { type: "meat", amount: 0 },
+    { itemType: "salad", amount: 0 },
+    { itemType: "cheese", amount: 0 },
+    { itemType: "meat", amount: 0 },
   ],
   totalPrice: 80,
 };
@@ -21,17 +21,17 @@ const burgerSlice = createSlice({
   reducers: {
     addIngredient: (state, action) => {
       const newState = state.ingredients.map((item) => {
-        if (item.type === action.payload.type) {
+        if (item.itemType === action.payload.itemType) {
           return { ...item, amount: item.amount + 1 };
         } else return { ...item };
       });
-      state.totalPrice += ingredientPrices[action.payload.type];
+      state.totalPrice += ingredientPrices[action.payload.itemType];
       state.ingredients = newState;
     },
     removeIngredient: (state, action) => {
       const newState = state.ingredients.map((item) => {
-        if (item.type === action.payload.type && item.amount > 0) {
-          state.totalPrice -= ingredientPrices[action.payload.type];
+        if (item.itemType === action.payload.itemType && item.amount > 0) {
+          state.totalPrice -= ingredientPrices[action.payload.itemType];
           return { ...item, amount: item.amount - 1 };
         } else return { ...item };
       });

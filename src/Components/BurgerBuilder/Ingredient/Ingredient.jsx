@@ -8,7 +8,7 @@ import "./Ingredient.css";
 const Ingredient = (props) => {
   let ingredient = null;
 
-  switch (props.type) {
+  switch (props.itemType) {
     case "bread-bottom":
       ingredient = (
         <div>
